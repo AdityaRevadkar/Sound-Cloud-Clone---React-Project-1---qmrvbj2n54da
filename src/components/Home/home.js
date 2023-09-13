@@ -1,8 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import Musicplayer from "../MusicPlayer/MusicPlayer";
 import Controls from "../Contorls/controls";
+
+import playpause from "../context/playpause";
 
 
 function Home(){
@@ -10,8 +12,8 @@ function Home(){
   const[songsdata,setSongsData] = useState([]);
   const audioEl = useRef();
   const[info,setInfo] = useState(null);
-  const[s,setS]=useState(null);
-  
+  const[val,setVal]=useState(null);
+
 
 async function getTrendingList(){
 const response = await fetch('https://academics.newtonschool.co/api/v1/music/song', {
@@ -38,9 +40,9 @@ setInfo(info);
 } 
 
 
-
 return(
       <>
+
 <div className="frontHero">
    <div className="frontHero__container">
 
@@ -91,10 +93,15 @@ return(
                <img className="image" src={val.thumbnail}/>
                <div className="play-button">
                 <button onClick={()=>{
-                 setS(val);
-                  console.log(val);
-                    
-                }} ><FontAwesomeIcon icon={faPlay} style={{height:'45px'}} /></button>
+           setVal(val);
+           info.current.src=val.audio_url;
+
+           
+  // console.log(info,"info");
+;
+  
+ 
+} }><FontAwesomeIcon icon={faPlay} style={{height:'45px'}} /></button>
               </div>
               </div>
 
@@ -110,8 +117,8 @@ return(
 
       </div>
 
-      <Musicplayer songsdata={songsdata} childHandler={childHandler} info={info} s={s}/>
-      
+      <Musicplayer childHandler={childHandler} info={info} val={val} songsdata={songsdata}/>
+     
 
 </>
     );
