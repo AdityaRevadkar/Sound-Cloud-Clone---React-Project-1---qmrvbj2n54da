@@ -4,9 +4,9 @@ import { faPlay ,faForward , faBackward , faPause} from '@fortawesome/free-solid
 import Controls from '../Contorls/controls';
 
 
-function Musicplayer({songsdata,childHandler,s}){
-const songs= songsdata;
-console.log(s,"h");
+function Musicplayer({childHandler,val}){
+
+// console.log(val," i am aval");
 const ref= useRef();
 childHandler(ref);
 
@@ -14,10 +14,12 @@ childHandler(ref);
 
 const [isPlaying, setIsPlaying] = useState(false);
 
-const [currentSong, setCurrentSong] = useState(s);
+const [currentSong, setCurrentSong] = useState(val);
 
 
-
+console.log(currentSong,"i am current song");
+// console.log(ref);
+// console.log(isPlaying);
 useEffect(() => {
 
     if (isPlaying) {
@@ -32,7 +34,7 @@ const onPlaying = () => {
     const duration = ref.current.duration;
     const ct = ref.current.currentTime;
 
-    setCurrentSong({ ...s, "progress": ct / duration * 100, "length": duration })
+    setCurrentSong({ ...val, "progress": ct / duration * 100, "length": duration })
 
   }
 
@@ -42,9 +44,9 @@ return(
         
 <div>     
     <audio ref={ref} onTimeUpdate={onPlaying}>
-      <source src="`https://newton-project-resume-backend.s3.amazonaws.com/audio/${s._id}`"></source>
+      <source src={currentSong?.audio_url}></source>
     </audio>
-    <Controls songs={songs} isplaying={isPlaying} setisplaying={setIsPlaying} audioElem={ref} currentSong={s} setCurrentSong={setCurrentSong} />
+    <Controls isplaying={isPlaying} setisplaying={setIsPlaying} audioElem={ref} currentSong={currentSong} setCurrentSong={setCurrentSong} />
 
     
 </div>   
